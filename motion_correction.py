@@ -35,7 +35,9 @@ def motion_correction(path=os.curdir, overwrite=False, hidden_markov_mc=False):
 
 
 	dataset_name = os.path.join(path, tl+export_addon+'_mc.sima')
-	avg_img_name = os.path.join(path, 'avgs_'+tl+export_addon+'.tif')
+	if not os.path.exists(os.path.join(path, 'manual')):
+			os.mkdir(os.path.join(path, 'manual'))
+	avg_img_name = os.path.join(path, 'manual', 'avgs_'+tl+export_addon+'.tif')
 	if overwrite:
 		try:
 			shutil.rmtree(dataset_name)
@@ -47,6 +49,7 @@ def motion_correction(path=os.curdir, overwrite=False, hidden_markov_mc=False):
 	dataset = mc_approach.correct(sequences, dataset_name, trim_criterion=0.9)
 	elapsed = time.clock() - st
 	print(elapsed / n_cycles, 'seconds per cycle')
+
 
 	dataset.export_averages([avg_img_name], fmt='TIFF16')
 

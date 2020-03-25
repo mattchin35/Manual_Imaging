@@ -32,7 +32,7 @@ def extract_dff(directory, plot=False, load_signal=False):
 		dff = np.load(os.path.join(hd, 'DFF'))		
 	else:
 		dataset = sima.ImagingDataset.load(directory)
-		rois = ROIList.load(os.path.join(hd,'RoiSet.zip'), fmt='ImageJ')
+		rois = ROIList.load(os.path.join(hd, 'manual', 'RoiSet.zip'), fmt='ImageJ')
 		dataset.add_ROIs(rois, 'from_ImageJ')  # this immediately saves the ROIs
 		signals = dataset.extract(rois, signal_channel='0', label='0') 
 		signals = dataset.signals(channel='0')['0']
@@ -57,12 +57,14 @@ def extract_dff(directory, plot=False, load_signal=False):
 					cur_mins.append(np.min(sroi))
 				bsl = np.min(cur_mins)
 				roi_df = (cycle - bsl) / bsl
-				# smooth the dff
-				sroi_df = sp.signal.savgol_filter(roi_df, 29, 3)
-				# sroi_df = sp.ndimage.filters.gaussian_filter1d(roi_df,3)
-				dff[i,j,:] = sroi_df  # rois x cycles x time
+				dff[i,j,:] = roi_df  # rois x cycles x time
 
-		np.save(os.path.join(hd, 'DFF'), dff)
+				# smooth the dff
+				# sroi_df = sp.signal.savgol_filter(roi_df, 29, 3)
+				# sroi_df = sp.ndimage.filters.gaussian_filter1d(roi_df,3)
+				# dff[i,j,:] = sroi_df  # rois x cycles x time
+
+		np.save(os.path.join(hd, 'manual', 'DFF'), dff)
 
 	# check by plotting
 	if plot:
