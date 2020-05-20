@@ -4,10 +4,10 @@ import argparse
 import glob
 import matplotlib.pyplot as plt
 import os
-#import sima
-#import sima.motion
-#import sima.segment
-#from sima.ROI import ROIList
+import sima
+import sima.motion
+import sima.segment
+from sima.ROI import ROIList
 import time
 import shutil
 
@@ -63,16 +63,16 @@ def motion_correction(path=os.curdir, overwrite=False, hidden_markov_mc=False, o
 if __name__ == '__main__':
 	argParser = argparse.ArgumentParser()
 	argParser.add_argument(
-        "-ow", "--overwrite", action="store_true",
+        "-w", "--overwrite", action="store_true",
         help="Overwrite files if they already exist.")
 	argParser.add_argument(
         "-hm", "--hidden_markov", action="store_true",
         help="Use hidden markov model based motion correction.")
 	argParser.add_argument(
-        "-op", "--output_path", action="store", default='',
+        "-p", "--output_path", action="store", default='',
         help="Path for output sima folder with motion corrected data.")
 	argParser.add_argument(
-        "-on", "--output_name", action="store", default='',
+        "-n", "--output_name", action="store", default='',
         help="Name for output sima folder with motion corrected data.")
 	argParser.add_argument(
         "directories", nargs='*', action="store", type=str, default='',
